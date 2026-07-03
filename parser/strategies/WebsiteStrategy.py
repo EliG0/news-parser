@@ -1,4 +1,4 @@
-# parser/strategies/Websitetrategy.py
+# parser/strategies/WebsiteStrategy.py
 
 import logging
 import re
@@ -18,7 +18,7 @@ def WebsiteStrategy(source: Source, headers: dict) -> list[str]:
         response = requests.get(source.url, headers=headers, timeout=10)
         if response.status_code != 200:
             return []
-    except Exception as e:
+    except requests.RequestException as e:
         logger.error(f"Ошибка подключения к сайту {source.name}: {e}")
         return []
 

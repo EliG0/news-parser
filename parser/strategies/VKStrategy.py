@@ -3,5 +3,5 @@ from typing import List
 from sources.models import Source
 
 
-def VKStrategy(source: Source, keywords: List[str], headers: dict) -> None:
+def VKStrategy(source: Source, headers: dict) -> list[str]:
     pass

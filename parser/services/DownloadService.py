@@ -5,16 +5,19 @@ from typing import List, Dict
 import aiohttp
 
 import logging
+
+from Django.settings import USER_AGENT, MAX_CONNECTIONS, REQUEST_TIMEOUT
+
 logger = logging.getLogger(__name__)
 
 class DownloadService:
     def __init__(self, headers: Dict[str, str] = None) -> None:
         self.headers = headers or {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': USER_AGENT
         }
 
     async def downloadPage(self, session: aiohttp.ClientSession, url: str):
-        timeout = aiohttp.ClientTimeout(total=10)
+        timeout = aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)
         try:
             async with session.get(url, headers=self.headers, timeout=timeout) as response:
                 if response.status == 200:
@@ -38,7 +41,7 @@ class DownloadService:
 
 
     async def downloadAllPages(self, urls: List[str]):
-        semaphore = asyncio.Semaphore(10)
+        semaphore = asyncio.Semaphore(MAX_CONNECTIONS)
 
         async def sem_download(session, url):
             async with semaphore:

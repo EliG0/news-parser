@@ -1,9 +1,12 @@
 # parser/services/ExtractService.py
+import logging
 from typing import *
 
 import trafilatura
 
 from parser.services.Model import ParsedArticle
+
+logger = logging.getLogger(__name__)
 
 
 class ExtractService:
@@ -13,25 +16,28 @@ class ExtractService:
         articles = []
 
         for page in downloaded:
-            extract = trafilatura.bare_extraction(
-                page['html'],
-                with_metadata=True,
-            )
+            try:
+                extract = trafilatura.bare_extraction(
+                    page['html'],
+                    with_metadata=True,
+                )
 
-            if not extract:
-                continue
+                if not extract:
+                    continue
 
-            if isinstance(extract, dict):
-                title = extract.get("title") or "Без заголовка"
-                text = extract.get("text") or ""
-            else:
-                title = getattr(extract, "title", "Без заголовка")
-                text = getattr(extract, "text", "")
+                if isinstance(extract, dict):
+                    title = extract.get("title") or "Без заголовка"
+                    text = extract.get("text") or ""
+                else:
+                    title = getattr(extract, "title", "Без заголовка")
+                    text = getattr(extract, "text", "")
 
-            articles.append(ParsedArticle(
-                url=page["url"],
-                text=text,
-                title=title
-            ))
+                articles.append(ParsedArticle(
+                    url=page["url"],
+                    text=text,
+                    title=title
+                ))
+            except Exception as e:
+                logger.info(f"ExtractService | extract | Error: {e}")
 
         return articles

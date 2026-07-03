@@ -3,8 +3,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Pipeline:
-    def __init__(self, donwloader, extractor, matcher, storage):
-        self.downloader = donwloader
+    def __init__(self, downloader, extractor, matcher, storage):
+        self.downloader = downloader
         self.extractor = extractor
         self.matcher = matcher
         self.storage = storage

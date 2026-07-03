@@ -2,18 +2,10 @@
 
 import logging
 
-from parser.strategies.RSSStrategy import RSSStrategy
-from parser.strategies.VKStrategy import VKStrategy
-from parser.strategies.WebsiteStrategy import WebsiteStrategy
-
+from parser.strategies.registry import PARSER_REGISTRY
 
 logger = logging.getLogger(__name__)
 
-PARSER_REGISTRY = {
-    "site": WebsiteStrategy,
-    "rss": RSSStrategy,
-    "vk": VKStrategy,
-}
 
 def run(source, headers):
     parser = PARSER_REGISTRY.get(source.sourceType)

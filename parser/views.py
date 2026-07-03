@@ -2,6 +2,7 @@ import threading
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from rest_framework.pagination import LimitOffsetPagination
 from parser.Crawler import ParserRun
 
 from rest_framework import viewsets
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all().order_by('-id')
     serializer_class = ArticleSerializer
+    pagination_class = LimitOffsetPagination
 
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['source']
@@ -26,7 +28,13 @@ def HomeView(request):
     if request.method == 'POST':
         logger.info("▶ Button pressed")
 
-        threading.Thread(target=ParserRun, daemon=True).start()
+        def run_and_log():
+            try:
+                ParserRun()
+            except Exception:
+                logger.exception("Crawler crashed")
+
+        threading.Thread(target=run_and_log, daemon=True).start()
 
         messages.success(request, "Парсер запущен в фоновом режиме.")
         return redirect('home')
