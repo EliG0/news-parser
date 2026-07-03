@@ -9,3 +9,11 @@ class ParsedArticle:
     title: str
     text: str
     matchedKeywords: list[str] = None
+
+
+@dataclass
+class PipelineResult:
+    downloaded: int
+    extracted: int
+    matched: int
+    saved: int

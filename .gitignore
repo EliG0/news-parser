@@ -11,5 +11,4 @@ __pycache__/
 .idea/
 .vscode/
 
-sites.txt
 *.log
