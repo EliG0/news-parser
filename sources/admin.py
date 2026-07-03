@@ -5,12 +5,12 @@ from .models import Source, Keyword
 admin.site.register(Keyword)
 
 from django.contrib import admin
-from parser.Crawler import ParserRun
+from parser.Crawler import Crawler
 
 
 @admin.action(description='🔄 Parse CURRENT sources')
 def trigger_parser(modeladmin, request, queryset):
-    ParserRun(sources_queryset=queryset)
+    Crawler(sources_queryset=queryset)
     modeladmin.message_user(request, f"Success with {queryset.count()} sources")
 
 

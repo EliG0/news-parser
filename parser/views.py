@@ -3,7 +3,7 @@ import threading
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from rest_framework.pagination import LimitOffsetPagination
-from parser.Crawler import ParserRun
+from parser.Crawler import Crawler
 
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
@@ -30,7 +30,7 @@ def HomeView(request):
 
         def run_and_log():
             try:
-                ParserRun()
+                Crawler()
             except Exception:
                 logger.exception("Crawler crashed")
 
