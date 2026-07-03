@@ -21,7 +21,7 @@ def crawl_single_source(source: Source, keywords: list):
         'User-Agent': USER_AGENT
     }
 
-    logger.info(f"----- Crawling STARTED for source: {source.name} ------ \n Keywords: {len(keywords)}")
+    logger.info(f"----- Crawling STARTED for source: {source.name} | Keywords: {len(keywords)}")
 
     pipeline = Pipeline(DownloadService(), ExtractService(), MatchService(keywords), StorageService())
 
@@ -46,7 +46,7 @@ def Crawler(sources_queryset=None):
         logger.info("No active sources or keywords")
         return
 
-    logger.info(f"----- Crawling STARTED ------ \n Loaded sources: {sources.count()}, Keywords: {len(keywords)}")
+    logger.info(f"----- Crawling STARTED | Loaded sources: {sources.count()}, Keywords: {len(keywords)} ------ \n ")
 
     for source in sources:
         crawl_single_source(source, keywords)
