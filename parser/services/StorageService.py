@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class StorageService:
     def save(self, articles, source):
+        count = 0
         with transaction.atomic():
             for article in articles:
                 db_article, create = Article.objects.get_or_create(
@@ -23,3 +24,5 @@ class StorageService:
                 )
                 if create:
                     logger.info(f"[+]: {db_article.title}")
+                    count += 1
+        return count

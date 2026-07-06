@@ -1,5 +1,8 @@
 # parser/services/Pipeline
 import logging
+
+from parser.services.Model import PipelineResult
+
 logger = logging.getLogger(__name__)
 
 class Pipeline:
@@ -9,18 +12,25 @@ class Pipeline:
         self.matcher = matcher
         self.storage = storage
 
-    def run(self, links, source):
+    def run(self, links, source) -> PipelineResult:
         # Ассинхронное скачивание страниц
-        pages = self.downloader.download(links)
-        logger.info(f"Download {len(pages)} pages")
+        downloaded_pages = self.downloader.download(links)
+        logger.info(f"Download {len(downloaded_pages)} pages")
 
         # Экстракция статей из страниц
-        articles = self.extractor.extract(pages)
+        extracted_articles = self.extractor.extract(downloaded_pages)
 
         # Поиск ключевых слов
-        matched_articles = self.matcher.match(articles)
+        matched_articles = self.matcher.match(extracted_articles)
         logger.info(f"Find {len(matched_articles)} matches")
 
-
         # Сохранение статей в БД
-        self.storage.save(matched_articles, source)
+        saved_articles_count = self.storage.save(matched_articles, source)
+        logger.info(f"Save {saved_articles_count} articles")
+
+        return PipelineResult(
+            downloaded=len(downloaded_pages),
+            extracted=len(extracted_articles),
+            matched=len(matched_articles),
+            saved=saved_articles_count
+        )
