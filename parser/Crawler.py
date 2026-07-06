@@ -1,7 +1,7 @@
 # parser/Crawler.py
 import logging
 
-from Django.settings import USER_AGENT
+from parser.config import USER_AGENT
 from parser.services.DownloadService import DownloadService
 from parser.services.ExtractService import ExtractService
 from parser.services.MatchService import MatchService
@@ -20,13 +20,14 @@ def crawl_single_source(source: Source, keywords: list):
 
     logger.info(f"----- Crawling STARTED for source: {source.name} | Keywords: {len(keywords)}")
 
-    pipeline = Pipeline(DownloadService(), ExtractService(), MatchService(keywords), StorageService())
-
     links = Strategy.run(source, headers)
     if links is None:
         logger.warning(f'No links found for source: {source.name}')
+        logger.info(f"----- Crawling FINISHED for source: {source.name} | Result: No links found -----")
         return
+
     logger.info(f'Founded {len(links)} links')
+    pipeline = Pipeline(DownloadService(), ExtractService(), MatchService(keywords), StorageService())
     result = pipeline.run(links, source)
 
     logger.info(f"----- Crawling FINISHED for source: {source.name} | Result: {result} -----")

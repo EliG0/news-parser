@@ -6,7 +6,7 @@ import aiohttp
 
 import logging
 
-from Django.settings import USER_AGENT, MAX_CONNECTIONS, REQUEST_TIMEOUT
+from parser.config import USER_AGENT, MAX_CONNECTIONS, REQUEST_TIMEOUT
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class DownloadService:
             'User-Agent': USER_AGENT
         }
 
-    async def downloadPage(self, session: aiohttp.ClientSession, url: str):
+    async def downloadPage(self, session: aiohttp.ClientSession, url: str) -> Dict[str, str] | None:
         timeout = aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)
         try:
             async with session.get(url, headers=self.headers, timeout=timeout) as response:
