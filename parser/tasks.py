@@ -42,9 +42,9 @@ def celery_crawl_single_source(source_id: int):
 #
 @shared_task(name="parser.tasks.celery_crawl_sources_task")
 def celery_crawl_sources_task(source_ids):
-    sources = Source.objects.filter(pk__in=source_ids, isActive=True)
-    for source in sources:
-        celery_crawl_single_source.delay(source.id)
+    s_ids = Source.objects.filter(pk__in=source_ids, isActive=True).values_list('id', flat=True)
+    for s_id in s_ids:
+        celery_crawl_single_source.delay(s_id)
 
 
 #
@@ -53,6 +53,6 @@ def celery_crawl_sources_task(source_ids):
 #
 @shared_task(name="parser.tasks.celery_crawl_all_active_sources_task")
 def celery_crawl_all_active_sources_task():
-    active_sources = Source.objects.filter(isActive=True)
-    for source in active_sources:
-        celery_crawl_single_source.delay(source.id)
+    active_ids = Source.objects.filter(isActive=True).values_list('id', flat=True)
+    for s_id in active_ids:
+        celery_crawl_single_source.delay(s_id)
