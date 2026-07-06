@@ -180,4 +180,4 @@ celery -A Django beat -l info
 
 # 🐞 Примеры
 
-Подробнее о работе системы можно посмотреть в [`docs`](https://github.com/EliG0/news-parser/docs.md)
+Подробнее о работе системы можно посмотреть в [`docs`](docs/docs.md)
