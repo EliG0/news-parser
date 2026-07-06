@@ -10,6 +10,10 @@ class Article(models.Model):
     url = models.URLField(unique=True, verbose_name="Ссылка на статью")
     foundAt = models.DateTimeField(auto_now_add=True, verbose_name="Дата нахождения")
 
+    class Meta:
+        verbose_name = "Статья"
+        verbose_name_plural = "Статьи"
+        ordering = ['-foundAt']
 
     def __str__(self):
         return self.title

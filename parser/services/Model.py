@@ -17,3 +17,6 @@ class PipelineResult:
     extracted: int
     matched: int
     saved: int
+
+    def __str__(self):
+        return f"Downloaded: {self.downloaded}, Extracted: {self.extracted}, Matched: {self.matched}, Saved: {self.saved}"

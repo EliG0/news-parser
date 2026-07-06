@@ -15,12 +15,22 @@ class Source(models.Model):
     patterns = models.TextField(verbose_name="Регулярка", default="/", blank=True)
     rss = models.URLField(verbose_name="RSS", default="", blank=True)
 
+    class Meta:
+        verbose_name = "Источник"
+        verbose_name_plural = "Источники"
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 
 
 class Keyword(models.Model):
     word = models.CharField(max_length=100, unique=True, verbose_name="Ключевое слово")
+
+    class Meta:
+        verbose_name = "Ключевое слово"
+        verbose_name_plural = "Ключевые слова"
+        ordering = ['word']
 
     def __str__(self):
         return self.word
