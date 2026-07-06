@@ -4,7 +4,7 @@
 
 * Парсинг и асинхронность: Celery, Redis, aiohttp, asyncio, BeautifulSoup4, feedparser, trafilatura
 
-* БД: PostgreSQL, django-import-export
+* БД: PostgreSQL (SQLite в качестве локальных тестов), django-import-export
 
 ---
 
@@ -30,33 +30,33 @@
 То есть:
 
 ```text
-        +---------+
-        | Crawler |
-        +---------+
-            ↓
-       +----------+
-       | Strategy |
-       +----------+
-            ↓
-       +----------+
-       | Pipeline |
-       +----------+
-            ↓
-   +-----------------+
-   | DownloadService |
-   +-----------------+
-            ↓
-    +----------------+
-    | ExtractService |
-    +----------------+
-            ↓
-     +--------------+
-     | MatchService |
-     +--------------+
-            ↓
-    +----------------+
-    | StorageService |
-    +----------------+
+   +---------+
+   | Crawler |
+   +---------+
+        ↓
+   +----------+
+   | Strategy |
+   +----------+
+        ↓
+   +----------+
+   | Pipeline |
+   +----------+
+        ↓
++-----------------+
+| DownloadService |
++-----------------+
+        ↓
++----------------+
+| ExtractService |
++----------------+
+        ↓
+ +--------------+
+ | MatchService |
+ +--------------+
+        ↓
++----------------+
+| StorageService |
++----------------+
 ```
 
 ---
@@ -174,7 +174,7 @@ celery -A Django beat -l info
 
 2. Для RSS-каналов (`rss`):
     * Изменить тип источника на `RSS`
-    * Задать URL RSS-канала (например для Города48 это `https://gorod48.ru/rss/`)
+    * Задать URL RSS-канала ведущую на XML-фид (например для Города48 это `https://gorod48.ru/rss/rss.xml`)
 
 ---
 
