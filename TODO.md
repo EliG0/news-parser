@@ -14,14 +14,5 @@ class Source(models.Model):
     # Для сайта: {"patterns": ".*/news/.*"}
     # Для ВК: {"token": "123", "group_id": "999"}
     strategy_config = models.JSONField(default=dict, blank=True)
-```
 
-# Articles
-
-Пока падает из-за битых ссылок. Нужно сделать проверку на дурака. В случае если не указать регех или рсс программе плохо.
-
-
-# Pipeline
-
-Добавить статистику в конец пайплайна
 

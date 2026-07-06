@@ -1,47 +1,140 @@
----
+# 🛠️ Стек
 
-Django, Django REST Framework (DRF), django-import-export, django-rest-spectacular
+* Фреймворк: Django, Django REST Framework (DRF), django-rest-spectacular
 
-aiohttp, asyncio, BeautifulSoup4, feedparser, requests, trafilatura
+* Парсинг и асинхронность: Celery, Redis, aiohttp, asyncio, BeautifulSoup4, feedparser, trafilatura
 
----
-
-**`Strategies`:** На основе типа источника (`site`, `rss`, `vk`) выбирает нужный алгоритм поиска
-первичных ссылок.
-
-* `WebsiteStrategy` — парсинг HTML-кода через BeautifulSoup4 и фильтрация по регулярным выражениям (`source.patterns`).
-* `RSSStrategy` — загрузка XML-фидов через `requests` и разбор структуры с помощью `feedparser`
-* `VKStrategy` — пока заглушка, а так парсинг VK API
-
-**`DownloadService`:** Асинхронный пакетный загрузчик страниц на базе `aiohttp`
-
-**`ExtractService`:** Извлечение чистого текста статьи с помощью `trafilatura`.
-
-**`MatchService`:** Проверка текста на пересечение со списком ключевых слов с использованием регулярных
-выражений
-
-**`StorageService`:** Запись в БД
+* БД: PostgreSQL, django-import-export
 
 ---
 
-## 🔌 Django REST Framework API
+# 🏗️ Архитектура
+
+Логика реализована внутри приложения `parser` в виде сервисов и стратегий.
+
+* **`Strategies`:** Паттерн алгоритма поиска первичных ссылок в зависимости от источника (`site`, `rss`, `vk`)
+    * `WebsiteStrategy` — парсинг HTML-кода через BeautifulSoup4 и фильтрация по регулярным выражениям (
+      `source.patterns`).
+    * `RSSStrategy` — загрузка XML-фидов через `requests` и разбор структуры с помощью `feedparser`
+    * `VKStrategy` — интеграция с VK API (пока заглушка).
+
+* **`DownloadService`:** Асинхронный пакетный загрузчик страниц на базе `aiohttp`
+
+* **`ExtractService`:** Извлечение чистого текста статьи с помощью `trafilatura`.
+
+* **`MatchService`:** Проверка текста на пересечение со списком ключевых слов с использованием регулярных
+  выражений
+
+* **`StorageService`:** Запись в БД
+
+---
+
+# 🚀 Старт
+
+### 1. Клонируйте репозиторий и перейдите в папку проекта:
+
+```bash
+git clone https://github.com/EliG0/news-parser.git
+cd news-parser
+```
+
+#### 1.2. Создайте и активируйте виртуальное окружение:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # Для Linux/macOS
+# или
+venv\Scripts\activate     # Для Windows
+```
+
+#### 1.3. Установите зависимости:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Настройка конфигурации
+
+Создайте файл .env в корневом каталоге на основе примера:
+
+```bash
+cp .env.example .env
+```
+
+И заполните переменные окружения (настройки подключения к PostgreSQL и Redis).
+
+### 3. Настройка БД
+
+Убедитесь, что ваш локальный сервер PostgreSQL запущен и база данных, указанная в `.env`, создана.
+Выполните миграции Django и создание суперюзера:
+
+```bash
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+### 4. Запуск компонентов системы
+
+По умолчанию в проекте настроен гибридный режим. Если в `.env` не заполнены переменные для PostgreSQL и Redis, система автоматически переключится на локальную базу SQLite и синхронный режим тестирования Celery (Eager mode). В этом случае достаточно запустить только веб-сервер.
+
+#### Вариант А: Быстрый локальный тест (Без Redis и Postgres)
+Просто запустите стандартный сервер Django. Парсинг будет работать синхронно в том же терминале:
+```bash
+python manage.py runserver
+```
+#### Вариант Б: Полный запуск (Требуется запущенный Redis и Postgres)
+
+Для полноценной работы системы необходимо запустить три параллельных процесса:
+
+##### 1. Веб-сервер Django:
+
+```bash
+python manage.py runserver
+```
+
+##### 2. Воркер Celery (для обработки фоновых задач парсинга):
+
+```bash
+celery -A Django worker -l info
+```
+
+##### 3. Celery Beat (планировщик для периодического запуска парсеров):
+
+```bash
+celery -A Django beat -l info
+```
+
+---
+
+# 🔌 API
 
 Реализовано REST API на базе `ModelViewSet`
 
-* **Эндпоинт списков и деталей:** `/api/articles/`
-* **Сваггер:** `/api/swagger/`
+* **Эндпоинт списков и деталей:** `/api/articles/`, есть фильтры по дате нахождения и ключевым словам.
+* **Swagger:** `/api/swagger/`
+* Permissions: Изменение доступно для `is_staff`.
 
 ---
 
-## ⚙️ Админ-панель Django
+# ⚙️ Админ-панель Django
 
-* **`django-import-export`**
-* **`trigger_parser`**, позволяющий вручную запустить итерацию парсинга только для выбранных галочками сайтов.
+Доступна по адресу `/admin/`
+
+* Управление источниками (sources), ключевыми словами (Keywords) и статьями (Articles)
+* Экспорт\импорт с помощью `django-import-export`
+* Кастомный `trigger_parser`: ручной запуск парсинга только для выбранных чекбоксов источников
 
 ---
 
-## Ресурсы
+# 📝 Ресурсы
 
-Для добавления новых источников для корреткной работы нужно:
+Для добавления новых источников через админ-панель:
+
+1. Для обычных сайтов (`site`):
+
+* Задать базовый URL источника (например для Города48 это `https://gorod48.ru/`)
 * Сделать регулярку (например для Города48 это `/news/\d+/`)
-* Найти и вставить RSS ссылку (например для Города48 это `https://gorod48.ru/rss/rss.xml`) а также изменить тип сайта на RSS.
+
+2. Для RSS-каналов (`rss`):
+    * Изменить тип источника на `RSS`
+    * Задать URL RSS-канала (например для Города48 это `https://gorod48.ru/rss/`)
