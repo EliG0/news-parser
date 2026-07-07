@@ -24,13 +24,13 @@ class ArticleInline(admin.TabularInline):
     model = Article
     extra = 0
 
-    fields = ('title', 'found_at', 'words', "url")
-    readonly_fields = ('title', 'found_at', 'words', 'url')
+    fields = ('title', 'published_at', 'found_at', 'words', "url")
+    readonly_fields = ('title', 'published_at', 'found_at', 'words', 'url')
     can_delete = False
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.order_by('-found_at')[:20]
+        return qs.order_by('-published_at', '-found_at')
 
 
 @admin.register(Source)

@@ -24,7 +24,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ArticleFilter
     search_fields = ['title', 'text', 'words']
-    ordering_fields = ['foundAt', 'title']
+    ordering_fields = ['found_at', 'published_at', 'title']
 
 
 def home_view(request):

@@ -37,7 +37,7 @@ class ExtractService:
                     text = getattr(extract, "text", "")
                     published_at = getattr(extract, "date", None)
 
-                parsed_date = parse_date(published_at)
+                parsed_date = parse_date(published_at) if published_at else None
                 validated_date = validate_date(parsed_date)
                 published_dt = self._to_datetime(validated_date)
 

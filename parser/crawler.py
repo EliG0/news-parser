@@ -17,7 +17,7 @@ def crawl_single_source(source: Source, keywords: list):
         'User-Agent': USER_AGENT
     }
 
-    logger.info(f"----- Crawling STARTED for source: {source.name} | Keywords: {len(keywords)}")
+    logger.info(f"----- Crawling STARTED for source: {source.name} | Keywords: {len(keywords)} -----")
 
     links = strategy.run(source, headers)
     if links is None:
