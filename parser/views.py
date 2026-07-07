@@ -27,7 +27,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     ordering_fields = ['foundAt', 'title']
 
 
-def HomeView(request):
+def home_view(request):
     if request.method == 'POST':
         logger.info("▶ Button pressed - Triggering Celery workflow")
 

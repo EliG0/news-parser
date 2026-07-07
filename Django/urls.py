@@ -4,13 +4,13 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
 from parser.views import ArticleViewSet
-from parser.views import HomeView
+from parser.views import home_view
 
 router = DefaultRouter()
 router.register(r'articles', ArticleViewSet, basename='article')
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HomeView, name='home'),
+    path('', home_view, name='home'),
     path('api/', include(router.urls)),
 
 

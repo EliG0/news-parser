@@ -1,7 +1,6 @@
-# parser/services/MatchService.py
 import re
 
-from parser.services.Model import ParsedArticle
+from parser.services.model import ParsedArticle
 
 
 class MatchService:
@@ -22,10 +21,10 @@ class MatchService:
             text = (article.text or "").lower()
             combined = f"{title} {text}"
 
-            matchedWords = sorted(list(set(self.pattern.findall(combined))))
+            matched_words = sorted(list(set(self.pattern.findall(combined))))
 
-            if matchedWords:
-                article.matchedKeywords = matchedWords
+            if matched_words:
+                article.matchedKeywords = matched_words
                 result.append(article)
 
         return result

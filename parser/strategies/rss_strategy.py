@@ -1,5 +1,3 @@
-# parser/strategies/RSSStrategy.py
-
 import logging
 from typing import List
 
@@ -11,9 +9,9 @@ from sources.models import Source
 logger = logging.getLogger(__name__)
 
 
-def RSSStrategy(source: Source, headers: dict) -> List[str]:
+def rss_strategy(source: Source, headers: dict) -> List[str]:
     logger.info(f"Using RSS strategy to: {source.name} ({source.rss})")
-    foundedUrls = set()
+    founded_urls = set()
 
     try:
         response = requests.get(source.rss, headers=headers, timeout=10)
@@ -27,9 +25,9 @@ def RSSStrategy(source: Source, headers: dict) -> List[str]:
         for post in feed.entries:
             link = post.get("link")
             if link:
-                foundedUrls.add(link)
+                founded_urls.add(link)
 
     except Exception as e:
         logger.error(f"Error while parsing RSS from {source.name}: {e}")
 
-    return list(foundedUrls)
+    return list(founded_urls)

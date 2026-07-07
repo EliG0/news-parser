@@ -1,7 +1,6 @@
-# parser/services/Pipeline
 import logging
 
-from parser.services.Model import PipelineResult
+from parser.services.model import PipelineResult
 
 logger = logging.getLogger(__name__)
 

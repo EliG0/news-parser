@@ -24,19 +24,19 @@ class ArticleInline(admin.TabularInline):
     model = Article
     extra = 0
 
-    fields = ('title', 'foundAt', 'words', "url")
-    readonly_fields = ('title', 'foundAt', 'words', 'url')
+    fields = ('title', 'found_at', 'words', "url")
+    readonly_fields = ('title', 'found_at', 'words', 'url')
     can_delete = False
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.order_by('-foundAt')[:20]
+        return qs.order_by('-found_at')[:20]
 
 
 @admin.register(Source)
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url', 'article_count', 'sourceType', 'isActive', "patterns", "rss")
-    list_filter = ('sourceType', 'isActive')
+    list_display = ('name', 'url', 'article_count', 'source_type', 'is_active', "patterns", "rss")
+    list_filter = ('source_type', 'is_active')
     search_fields = ('name', 'url')
     actions = [trigger_parser]
     inlines = [ArticleInline]

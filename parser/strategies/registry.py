@@ -1,11 +1,9 @@
-# parser/strategies/registry.py
-
-from parser.strategies.RSSStrategy import RSSStrategy
-from parser.strategies.VKStrategy import VKStrategy
-from parser.strategies.WebsiteStrategy import WebsiteStrategy
+from parser.strategies.rss_strategy import rss_strategy
+from parser.strategies.vk_strategy import vk_strategy
+from parser.strategies.website_strategy import website_strategy
 
 PARSER_REGISTRY = {
-    "site": WebsiteStrategy,
-    "rss": RSSStrategy,
-    "vk": VKStrategy,
+    "site": website_strategy,
+    "rss": rss_strategy,
+    "vk": vk_strategy,
 }

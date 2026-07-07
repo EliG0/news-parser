@@ -1,5 +1,3 @@
-# parsers/services/Model.py
-
 from dataclasses import dataclass
 
 
@@ -8,7 +6,7 @@ class ParsedArticle:
     url: str
     title: str
     text: str
-    matchedKeywords: list[str] = None
+    matched_keywords: list[str] = None
     published_at: str = None
 
 

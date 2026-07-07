@@ -1,4 +1,3 @@
-# parser/services/DownloadService.py
 import asyncio
 from typing import List, Dict
 
@@ -16,7 +15,7 @@ class DownloadService:
             'User-Agent': USER_AGENT
         }
 
-    async def downloadPage(self, session: aiohttp.ClientSession, url: str) -> Dict[str, str] | None:
+    async def download_page(self, session: aiohttp.ClientSession, url: str) -> Dict[str, str] | None:
         timeout = aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)
         try:
             async with session.get(url, headers=self.headers, timeout=timeout) as response:
@@ -40,12 +39,12 @@ class DownloadService:
             return None
 
 
-    async def downloadAllPages(self, urls: List[str]):
+    async def download_all_pages(self, urls: List[str]):
         semaphore = asyncio.Semaphore(MAX_CONNECTIONS)
 
         async def sem_download(session, url):
             async with semaphore:
-                return await self.downloadPage(session, url)
+                return await self.download_page(session, url)
 
         async with aiohttp.ClientSession() as session:
             tasks = [sem_download(session, url) for url in urls]
@@ -58,4 +57,4 @@ class DownloadService:
         if not urls:
             return []
 
-        return asyncio.run(self.downloadAllPages(urls))
+        return asyncio.run(self.download_all_pages(urls))

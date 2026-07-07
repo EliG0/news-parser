@@ -1,5 +1,3 @@
-# parser/strategies/WebsiteStrategy.py
-
 import logging
 import re
 from urllib.parse import urljoin
@@ -12,7 +10,7 @@ from sources.models import Source
 logger = logging.getLogger(__name__)
 
 
-def WebsiteStrategy(source: Source, headers: dict) -> list[str]:
+def website_strategy(source: Source, headers: dict) -> list[str]:
     logger.info(f"Using Website strategy to: {source}")
     try:
         response = requests.get(source.url, headers=headers, timeout=10)
@@ -23,11 +21,11 @@ def WebsiteStrategy(source: Source, headers: dict) -> list[str]:
         return []
 
     soup = BeautifulSoup(response.text, 'html.parser')
-    foundedLinks = soup.find_all('a', href=True)
-    foundedUrls = set()
-    for a in foundedLinks:
+    founded_links = soup.find_all('a', href=True)
+    founded_urls = set()
+    for a in founded_links:
         href = a.get('href')
         if re.search(source.patterns, href):
-            foundedUrls.add(urljoin(source.url, href))
+            founded_urls.add(urljoin(source.url, href))
 
-    return list(foundedUrls)
+    return list(founded_urls)

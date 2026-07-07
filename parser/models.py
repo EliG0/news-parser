@@ -11,7 +11,7 @@ class Article(models.Model):
     text = models.TextField(verbose_name="Текст статьи")
     url = models.URLField(unique=True, verbose_name="Ссылка на статью")
     published_at = models.DateTimeField(verbose_name="Дата публикации", null=True, blank=True)
-    foundAt = models.DateTimeField(auto_now_add=True, verbose_name="Дата нахождения")
+    found_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата нахождения")
 
     def save(self, *args, **kwargs):
         # Если при создании/обновлении статьи поле published_at будет None, то приравниваем его к текущему времени.
@@ -22,7 +22,7 @@ class Article(models.Model):
     class Meta:
         verbose_name = "Статья"
         verbose_name_plural = "Статьи"
-        ordering = ['-foundAt']
+        ordering = ['-found_at']
 
     def __str__(self):
         return self.title

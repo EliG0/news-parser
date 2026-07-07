@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Source(models.Model):
-    sourceTypes = [
+    source_types = [
         ('site', 'сайт'),
         ('vk', 'ВК'),
         ('rss', ' RSS'),
@@ -10,8 +10,8 @@ class Source(models.Model):
 
     name = models.CharField(max_length=100, verbose_name="Название")
     url = models.URLField(unique=True, verbose_name="Ссылка / ID группы")
-    sourceType = models.CharField(max_length=10, choices=sourceTypes, default='site', verbose_name="Тип", blank=True)
-    isActive = models.BooleanField(default=True, verbose_name="Активен для парсинга")
+    source_type = models.CharField(max_length=10, choices=source_types, default='site', verbose_name="Тип", blank=True)
+    is_active = models.BooleanField(default=True, verbose_name="Активен для парсинга")
     patterns = models.TextField(verbose_name="Регулярка", default="/", blank=True)
     rss = models.URLField(verbose_name="RSS", default="", blank=True)
 

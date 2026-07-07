@@ -1,10 +1,9 @@
-# parser/tasks.py
 import logging
 
 from celery import shared_task
 from django.core.cache import cache
 
-from parser.Crawler import crawl_single_source
+from parser.crawler import crawl_single_source
 from sources.models import Source, Keyword
 
 CACHE_TIMEOUT = 600
@@ -33,7 +32,7 @@ def celery_crawl_single_source(source_id: int):
         Поэтому передается только (примитив) во избежание проблем с сериализацией Django-моделей и устареванием данных.
     """
     try:
-        source = Source.objects.get(pk=source_id, isActive=True)
+        source = Source.objects.get(pk=source_id, is_active=True)
 
         crawl_single_source(source, get_cached_keywords())
 
@@ -49,7 +48,7 @@ def celery_crawl_sources_task(source_ids):
         Задача-роутер. Принимает список ID из админ-панели (Django bulk action)
         и дробит их на множество независимых параллельных подзадач celery_crawl_single_source.
     """
-    s_ids = Source.objects.filter(pk__in=source_ids, isActive=True).values_list('id', flat=True)
+    s_ids = Source.objects.filter(pk__in=source_ids, is_active=True).values_list('id', flat=True)
     for s_id in s_ids:
         celery_crawl_single_source.delay(s_id)
 
@@ -60,6 +59,6 @@ def celery_crawl_all_active_sources_task():
         Задача-роутер для запуска всех активных источников.
         Берет все активные источники из базы и создает для каждого отдельную задачу celery_crawl_single_source.
     """
-    active_ids = Source.objects.filter(isActive=True).values_list('id', flat=True)
+    active_ids = Source.objects.filter(is_active=True).values_list('id', flat=True)
     for s_id in active_ids:
         celery_crawl_single_source.delay(s_id)

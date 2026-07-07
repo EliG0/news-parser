@@ -1,5 +1,3 @@
-# parser/services/StorageService.py
-
 import logging
 
 from parser.models import Article
