@@ -13,7 +13,7 @@ class StorageService:
         count = 0
         with transaction.atomic():
             for article in articles:
-                db_article, create = Article.objects.get_or_create(
+                db_article, created = Article.objects.update_or_create(
                     url=article.url,
                     defaults={
                         "source": source,
@@ -22,7 +22,7 @@ class StorageService:
                         "words": ", ".join(article.matchedKeywords),
                     }
                 )
-                if create:
+                if created:
                     logger.info(f"[+]: {db_article.title}")
                     count += 1
         return count
