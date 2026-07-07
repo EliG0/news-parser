@@ -35,7 +35,8 @@ class ExtractService:
                 articles.append(ParsedArticle(
                     url=page["url"],
                     text=text,
-                    title=title
+                    title=title,
+                    published_at=extract.get("date")
                 ))
             except Exception as e:
                 logger.info(f"ExtractService | extract | Error: {e}")

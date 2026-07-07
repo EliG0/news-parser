@@ -9,6 +9,7 @@ class ParsedArticle:
     title: str
     text: str
     matchedKeywords: list[str] = None
+    published_at: str = None
 
 
 @dataclass
