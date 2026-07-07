@@ -1,7 +1,8 @@
 import logging
 
-from parser.models import Article
 from django.db import transaction
+
+from parser.models import Article
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,7 @@ class StorageService:
                         "title": article.title,
                         "text": article.text,
                         "words": ", ".join(article.matchedKeywords),
+                        "published_at": article.published_at,
                     }
                 )
                 if created:

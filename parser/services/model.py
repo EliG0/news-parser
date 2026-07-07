@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 
 @dataclass
@@ -7,7 +8,7 @@ class ParsedArticle:
     title: str
     text: str
     matched_keywords: list[str] = None
-    published_at: str = None
+    published_at: datetime | None = None
 
 
 @dataclass

@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 
 from sources.models import Source
 
@@ -12,12 +11,6 @@ class Article(models.Model):
     url = models.URLField(unique=True, verbose_name="Ссылка на статью")
     published_at = models.DateTimeField(verbose_name="Дата публикации", null=True, blank=True)
     found_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата нахождения")
-
-    def save(self, *args, **kwargs):
-        # Если при создании/обновлении статьи поле published_at будет None, то приравниваем его к текущему времени.
-        if not self.published_at:
-            self.published_at = timezone.now()
-        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Статья"
