@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime, date
-from typing import *
+from typing import List, Dict
 
 import trafilatura
 from django.utils import timezone
