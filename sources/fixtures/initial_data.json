@@ -1,0 +1,121 @@
+[
+{
+    "model": "sources.source",
+    "pk": 1,
+    "fields": {
+        "name": "Город48",
+        "url": "https://gorod48.ru/",
+        "source_type": "rss",
+        "is_active": true,
+        "patterns": "/news/\\d+/",
+        "rss": "https://gorod48.ru/rss/rss.xml"
+    }
+},
+{
+    "model": "sources.source",
+    "pk": 2,
+    "fields": {
+        "name": "Вести.Липецк",
+        "url": "https://vesti-lipetsk.ru/",
+        "source_type": "site",
+        "is_active": true,
+        "patterns": "/novosti/[^/]+/[^/]+",
+        "rss": ""
+    }
+},
+{
+    "model": "sources.source",
+    "pk": 3,
+    "fields": {
+        "name": "Мое-Липецк",
+        "url": "https://moe-lipetsk.ru/",
+        "source_type": "rss",
+        "is_active": true,
+        "patterns": "/news/[^/]+/\\d+",
+        "rss": "https://moe-lipetsk.ru/rss"
+    }
+},
+{
+    "model": "sources.source",
+    "pk": 4,
+    "fields": {
+        "name": "Липецк Ньюс",
+        "url": "https://lipetsknews.ru/",
+        "source_type": "rss",
+        "is_active": true,
+        "patterns": "/novosti-regiona/\\d+",
+        "rss": "https://lipetsknews.ru/rss.xml"
+    }
+},
+{
+    "model": "sources.source",
+    "pk": 5,
+    "fields": {
+        "name": "Липецк Медиа",
+        "url": "https://lipetskmedia.ru/",
+        "source_type": "site",
+        "is_active": true,
+        "patterns": "/news/[^/]+/[^/]+/$",
+        "rss": ""
+    }
+},
+{
+    "model": "sources.source",
+    "pk": 6,
+    "fields": {
+        "name": "Липецкая Область",
+        "url": "https://липецкаяобласть.рф/",
+        "source_type": "site",
+        "is_active": true,
+        "patterns": "/news/\\d+",
+        "rss": ""
+    }
+},
+{
+    "model": "sources.source",
+    "pk": 7,
+    "fields": {
+        "name": "Липецкое Время",
+        "url": "https://lipetsktime.ru/",
+        "source_type": "rss",
+        "is_active": true,
+        "patterns": "/news/[^/]+/[^/]+/$",
+        "rss": "https://lipetsktime.ru/rss.php"
+    }
+},
+{
+    "model": "sources.keyword",
+    "pk": 1,
+    "fields": {
+        "word": "уровень"
+    }
+},
+{
+    "model": "sources.keyword",
+    "pk": 2,
+    "fields": {
+        "word": "Липецк"
+    }
+},
+{
+    "model": "sources.keyword",
+    "pk": 3,
+    "fields": {
+        "word": "бензин"
+    }
+},
+{
+    "model": "sources.keyword",
+    "pk": 4,
+    "fields": {
+        "word": "Артамонов"
+    }
+},
+{
+    "model": "sources.keyword",
+    "pk": 5,
+    "fields": {
+        "word": "жара"
+    }
+}
+]

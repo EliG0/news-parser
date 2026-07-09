@@ -105,6 +105,12 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+Если нужна БД с готовыми `Sources` и `Keywords` для быстрого старта:
+
+```bash
+python manage.py loaddata initial_data
+```
+
 ### 4. Запуск компонентов системы
 
 По умолчанию в проекте настроен гибридный режим. Если в `.env` не заполнены переменные для PostgreSQL и Redis, система
